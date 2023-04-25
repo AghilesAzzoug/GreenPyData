@@ -1,0 +1,38 @@
+<p>Use InPlace operations when possible.</p>
+<p>When using inplace operations, the original tensor is modified directly instead of creating a new copy, which can save memory, especially when working with large tensors.</p>
+<p>Inplace operations are faster than non-inplace operations, as they avoid the overhead of creating a new tensor.</p>
+<p><i>However, when not using a sequential module, it is important to note that the use of inplace operations should be done with caution, as it can also have some disadvantages, such as making the code less modular and harder to debug, and potentially causing issues with the computation graph and gradients during training.</i></p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+    import torch.nn as nn
+    ...
+    class Net(nn.Module):
+        def __init__(self):
+            super(Net, self).__init__()
+            self.encoder = nn.Sequential(
+                            nn.Conv2d(in_channels=1, out_channels=10, kernel_size=5, stride=1),
+                            nn.MaxPool2d(2),
+                            nn.ReLU()
+                )
+
+        def forward(self, x):
+            ...
+    ...
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+    import torch.nn as nn
+    ...
+    class Net(nn.Module):
+        def __init__(self):
+            super(Net, self).__init__()
+            self.encoder = nn.Sequential(
+                            nn.Conv2d(in_channels=1, out_channels=10, kernel_size=5, stride=1),
+                            nn.MaxPool2d(2),
+                            nn.ReLU(inplace=True)
+                )
+
+        def forward(self, x):
+            ...
+    ...
+</pre>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>greenpydata</groupId>
+    <artifactId>greenpydata</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>GreenPyData Plugin for Data Scientists</name>
+    <description>Provides rules to reduce the environmental footprint of your data science programs</description>
+    <url>https://github.com/AghilesAzzoug/GreenPyData</url>
+    <licenses>
+        <license>
+            <name>GPL v3</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.en.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:git:https://github.com/AghilesAzzoug/GreenPyData</connection>
+        <developerConnection>scm:git:https://github.com/AghilesAzzoug</developerConnection>
+        <url>https://github.com/AghilesAzzoug/GreenPyData</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <properties>
+
+        <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+
+        <encoding>UTF-8</encoding>
+        <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
+
+        <sonarqube.version>9.4.0.54424</sonarqube.version>
+        <sonarjava.version>7.15.0.30507</sonarjava.version>
+
+        <sonar.organization>Greenpydata</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
+        <!-- Don't forget to update this version -->
+        <jacoco.version>0.8.8</jacoco.version>
+
+        <sonar-plugin-api-impl.version>9.7.1.62043</sonar-plugin-api-impl.version>
+        <sonar-analyzer-commons.version>2.1.0.1111</sonar-analyzer-commons.version>
+        <sonar.python.version>3.19.0.10254</sonar.python.version>
+        <sonarphp.version>3.25.0.9077</sonarphp.version>
+        <sonarjavascript.version>9.13.0.20537</sonarjavascript.version>
+        <sonar-packaging.version>1.21.0.505</sonar-packaging.version>
+        <sonar.skipDependenciesPackaging>true</sonar.skipDependenciesPackaging>
+        <maven-shade-plugin.version>3.4.1</maven-shade-plugin.version>
+        <junit.version>4.13.2</junit.version>
+        <junit.jupiter.version>5.9.1</junit.jupiter.version>
+        <assertJ.version>3.23.1</assertJ.version>
+
+        <google.re2j>1.7</google.re2j>
+
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>org.sonarsource.sonarqube</groupId>
+                <artifactId>sonar-plugin-api</artifactId>
+                <version>${sonarqube.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sonarsource.analyzer-commons</groupId>
+                <artifactId>sonar-analyzer-commons</artifactId>
+                <version>${sonar-analyzer-commons.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sonarsource.sonarqube</groupId>
+                <artifactId>sonar-plugin-api-impl</artifactId>
+                <version>${sonar-plugin-api-impl.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.re2j</groupId>
+                <artifactId>re2j</artifactId>
+                <version>${google.re2j}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sonarsource.python</groupId>
+                <artifactId>sonar-python-plugin</artifactId>
+                <type>sonar-plugin</type>
+                <version>${sonar.python.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sonarsource.java</groupId>
+                <artifactId>java-checks-testkit</artifactId>
+                <version>${sonarjava.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit.jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-migrationsupport</artifactId>
+                <version>${junit.jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>${assertJ.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sonarsource.python</groupId>
+                <artifactId>python-checks-testkit</artifactId>
+                <version>${sonar.python.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.10.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.3.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
+                    <artifactId>sonar-packaging-maven-plugin</artifactId>
+                    <version>${sonar-packaging.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>${maven-shade-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <modules>
+        <module>pytorch-plugin</module>
+    </modules>
+</project>

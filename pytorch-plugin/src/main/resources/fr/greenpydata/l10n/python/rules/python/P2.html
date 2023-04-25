@@ -1,0 +1,12 @@
+<p>Use asynchronous data loading for better GPU usage.</p>
+<p>num_workers=0 would make data loading execute only after training or previous process is done. Setting num_workers >0 is expected to accelerate the process more especially for the i/o and augmentation of large data. For GPU specifically, Experiments found that num_workers = 4*num_GPU had the best performance. To be noted, high num_workers would have a large memory consumption overhead, which is also expected, because more data copies are being processed in the memory at the same time.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+    import torch
+    torch.utils.data.DataLoader(..., num_workers=0, ...)
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+    import torch
+    torch.utils.data.DataLoader(..., num_workers=4, ...)
+</pre>

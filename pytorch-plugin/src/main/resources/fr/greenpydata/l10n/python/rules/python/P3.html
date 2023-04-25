@@ -1,0 +1,17 @@
+<p>Use pinned memory to reduce data transfer in RAM.</p>
+<p>GPU cannot access data directly from the pageable memory of the CPU. The setting, pin_memory=True can allocate the staging memory for the data on the CPU host directly and save the time of transferring data from pageable memory to staging memory (i.e., pinned memory a.k.a., page-locked memory).</p>
+<p>For more details, see on Nvidia <a href="https://developer.nvidia.com/blog/how-optimize-data-transfers-cuda-cc/">blog</a> on data transfer optimization.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+    from torch.utils.data import DataLoader
+    ...
+    dataloader = utils.data.DataLoader(..., pin_memory=False, ...)
+    ...
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+    from torch.utils.data import DataLoader
+    ...
+    dataloader = utils.data.DataLoader(..., pin_memory=True, ...)
+    ...
+</pre>

@@ -1,0 +1,61 @@
+<p>Remove bias for convolutions before batch norm layers to save time and memory.</p>
+<p>The reason for this is that the bias term in a convolution layer can be absorbed into the scale parameter of the subsequent batch normalization layer. This is because batch normalization performs both normalization and scaling of the input, and the bias term can be considered as a part of the scaling factor.</p>
+<p>TLDR; Convolution bias effect would be canceled out by mean subtraction of the batch normalization. Removing it will increase inference/train speed and reduce memory usage.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+    import torch.nn as nn
+    import torch.nn.functional as F
+    ...
+    class Net(nn.Module):
+        def __init__(self):
+            super(CompliantNetWithSequential, self).__init__()
+            self.encoder = nn.Sequential(
+                            nn.Conv2d(in_channels=1, out_channels=10, kernel_size=5, stride=1),
+                            nn.MaxPool2d(2),
+                            nn.ReLU(),
+                            nn.Conv2d(10, 20, kernel_size=5), # bias is enabled by default
+                            nn.BatchNorm2d(20),
+                            nn.MaxPool2d(2),
+                            nn.ReLU()
+                )
+            self.dense1 = nn.Linear(in_features=320, out_features=50)
+            self.dense1_bn = nn.BatchNorm1d(50)
+            self.dense2 = nn.Linear(50, 10)
+
+    def forward(self, x):
+        x = self.encoder(x)
+        x = x.view(-1, 320)
+        x = F.relu(self.dense1_bn(self.dense1(x)))
+        return F.relu(self.dense2(x))
+
+    ...
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+    import torch.nn as nn
+    import torch.nn.functional as F
+    ...
+    class Net(nn.Module):
+        def __init__(self):
+            super(CompliantNetWithSequential, self).__init__()
+            self.encoder = nn.Sequential(
+                            nn.Conv2d(in_channels=1, out_channels=10, kernel_size=5, stride=1),
+                            nn.MaxPool2d(2),
+                            nn.ReLU(),
+                            nn.Conv2d(10, 20, kernel_size=5, bias=False),
+                            nn.BatchNorm2d(20),
+                            nn.MaxPool2d(2),
+                            nn.ReLU()
+                )
+            self.dense1 = nn.Linear(in_features=320, out_features=50)
+            self.dense1_bn = nn.BatchNorm1d(50)
+            self.dense2 = nn.Linear(50, 10)
+
+    def forward(self, x):
+        x = self.encoder(x)
+        x = x.view(-1, 320)
+        x = F.relu(self.dense1_bn(self.dense1(x)))
+        return F.relu(self.dense2(x))
+
+    ...
+</pre>

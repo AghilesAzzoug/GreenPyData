@@ -1,0 +1,18 @@
+<p>Directly create tensors as torch.Tensor.</p>
+<p>PyTorch already contains almost all methods for creating tensors. These methods are faster than using native Python or Numpy first to create tensors.</p>
+<p>If you're using GPU (or TPU) acceleration, add the device when creating the tensor.</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+    import torch
+    import numpy as np
+    ...
+    tensor = torch.tensor(np.random.rand(1000, 1000))
+    ...
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+    import torch
+    ...
+    tensor = torch.rand([1000, 1000])
+    ...
+</pre>
